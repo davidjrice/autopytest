@@ -1,0 +1,1 @@
+* allow configuration of source and test directories via `pyproject.toml`

@@ -1,5 +1,5 @@
 [project]
-name = "autotest"
+name = "autotest.py"
 version = "0.0.1"
 description = "Autotest"
 authors = [

@@ -7,20 +7,27 @@ from typing import Final
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
+from .config import parse_pyproject_toml
 from .pytest_runner import PytestRunner
 
-class Autotest(FileSystemEventHandler):
-    SOURCE_PATTERNS: Final[list] = [
-        r"app.+\.py$",
-        r"lib.+\.py$",
-    ]
-    TEST_PATTERN: Final[str] = r"tests.+\.py$"
 
+class Autotest(FileSystemEventHandler):
 
     def __init__(self, path:str):
-        log.basicConfig(level=log.INFO)
+        log.basicConfig(format="%(message)s", stream=sys.stdout, level=log.INFO)
         self.observer = Observer()
         self.observer.schedule(self, path, recursive=True)
+        self.config = parse_pyproject_toml(f"{path}/pyproject.toml")
+        self.source_directories = self.config["source_directories"]
+        self.test_directory = self.config["test_directory"]
+
+        self.source_patterns = []
+        for directory in self.source_directories:
+            pattern = re.escape(directory) + r".+\.py"
+            self.source_patterns.append(pattern)
+
+        self.test_pattern = re.escape(self.test_directory) + r".+\.py"
+
 
     def start(self) -> None:
         self.observer.start()
@@ -37,7 +44,7 @@ class Autotest(FileSystemEventHandler):
             self.observer.join()
 
     def on_modified(self, event: FileSystemEvent) -> None:
-        for pattern in self.SOURCE_PATTERNS:
+        for pattern in self.source_patterns:
             if re.search(pattern, event.src_path):
                 path = Path(event.src_path)
                 test_path_components = ["tests"]
@@ -52,7 +59,7 @@ class Autotest(FileSystemEventHandler):
                     PytestRunner.run(".")
 
         if (
-            re.search(self.TEST_PATTERN, event.src_path)
+            re.search(self.test_pattern, event.src_path)
             and PytestRunner.run(event.src_path) == 0
         ):
             PytestRunner.run(".")

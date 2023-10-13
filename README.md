@@ -4,13 +4,13 @@ Autotest observes file change events and whenever you save a file it runs the ap
 
 # Install
 ```
-poetry add --git https://github.com/davidjrice/autotest ansible
+poetry add autopytest
 ```
 
 # Usage
 ```
 cd <project>
-autotest
+autopytest
 ```
 
 # Configuration

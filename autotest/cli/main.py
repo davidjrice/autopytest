@@ -1,4 +1,4 @@
-from ..autotest import Autotest
+from autotest.autotest import Autotest
 import sys
 
 def cli() -> None:

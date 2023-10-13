@@ -1,7 +1,7 @@
 [project]
-name = "autotest.py"
+name = "autopytest"
 version = "0.0.1"
-description = "Autotest"
+description = "Autotest python code"
 authors = [
   { name = "David Rice", email = "me@davidjrice.co.uk" },
 ]
@@ -22,7 +22,7 @@ dependencies = [
 "Bug Tracker" = "https://github.com/davidjrice/autotest/issues"
 
 [project.scripts]
-autotest = "autotest.cli:main"
+autopytest = "autopytest.cli:main"
 
 [build-system]
 requires = ["hatchling"]

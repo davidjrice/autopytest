@@ -1,0 +1,29 @@
+[project]
+name = "autotest"
+version = "0.0.1"
+description = "Autotest"
+authors = [
+  { name = "David Rice", email = "me@davidjrice.co.uk" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.11"
+dependencies = [
+  "watchdog==3.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/davidjrice/autotest"
+"Bug Tracker" = "https://github.com/davidjrice/autotest/issues"
+
+[project.scripts]
+autotest = "autotest.cli.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

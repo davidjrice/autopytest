@@ -22,10 +22,10 @@ class Autotest(FileSystemEventHandler):
 
         self.source_patterns = []
         for directory in self.source_directories:
-            pattern = re.escape(directory) + r".+\.py"
+            pattern = re.escape(directory) + r".+\.py$"
             self.source_patterns.append(pattern)
 
-        self.test_pattern = re.escape(self.test_directory) + r".+\.py"
+        self.test_pattern = re.escape(self.test_directory) + r".+\.py$"
 
 
     def start(self) -> None:

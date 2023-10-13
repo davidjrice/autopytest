@@ -5,12 +5,6 @@ class PytestRunner:
     ARGS: Final[list] = [
         "/usr/bin/env",
         "pytest",
-        "-vvv",
-        "--cov=app/",
-        "--cov=lib/",
-        "--capture=no",
-        "-m",
-        "not integration",
     ]
 
     @classmethod

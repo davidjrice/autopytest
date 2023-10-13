@@ -20,7 +20,7 @@ class Autotest(FileSystemEventHandler):
     def __init__(self, path:str):
         log.basicConfig(level=log.INFO)
         self.observer = Observer()
-        self.observer.schedule(self.on_modified, path, recursive=True)
+        self.observer.schedule(self, path, recursive=True)
 
     def start(self) -> None:
         self.observer.start()

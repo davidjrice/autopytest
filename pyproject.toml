@@ -22,7 +22,7 @@ dependencies = [
 "Bug Tracker" = "https://github.com/davidjrice/autotest/issues"
 
 [project.scripts]
-autotest = "autotest.cli.main:main"
+autotest = "autotest.cli:main"
 
 [build-system]
 requires = ["hatchling"]

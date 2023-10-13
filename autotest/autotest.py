@@ -6,8 +6,8 @@ from pathlib import Path
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
-from config import parse_pyproject_toml
-from pytest_runner import PytestRunner
+from .config import parse_pyproject_toml
+from .pytest_runner import PytestRunner
 
 
 class Autotest(FileSystemEventHandler):

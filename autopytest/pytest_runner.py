@@ -1,12 +1,12 @@
 import subprocess
-from typing import Final
+from typing import Final, List
 
 class PytestRunner:
-    ARGS: Final[list] = [
+    ARGS: Final[List[str]] = [
         "/usr/bin/env",
         "pytest",
     ]
 
     @classmethod
-    def run(cls, path: str) -> int:
-        return subprocess.call([*cls.ARGS, path])  # noqa: S603
+    def run(cls, path: str, extra_args: List[str] = []) -> int:
+        return subprocess.call([*cls.ARGS, *extra_args, path])  # noqa: S603

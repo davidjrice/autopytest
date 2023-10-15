@@ -48,11 +48,13 @@ class Autotest(FileSystemEventHandler):
                 path = Path(event.src_path)
                 test_path_components = ["tests"]
 
-                for component in path.parts:
-                    if re.search(r".py", component):
-                        test_path_components.append(f"test_{component}")
-                    else:
-                        test_path_components.append(component)
+                for component in path.relative_to(Path.cwd()).parts:
+                    if component != "app":
+                        if re.search(r".py", component):
+                            test_path_components.append(f"test_{component}")
+                        else:
+                            test_path_components.append(component)
+                            
                 test_path = "/".join(test_path_components)
                 if Path(test_path).exists() and PytestRunner.run(test_path) == 0:
                     PytestRunner.run(".")

@@ -16,7 +16,7 @@ pytest_args=[{pytest_args}]
 exclude_paths=[{exclude_paths}]
 log_format="%(message)s"
 log_level="ERROR"
-telemetry={telemetry}
+telemetry="{telemetry}"
 '''
 
     config_str = config_template.format(

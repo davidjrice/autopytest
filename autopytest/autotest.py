@@ -13,16 +13,17 @@ from .pytest_runner import PytestRunner
 class Autotest(FileSystemEventHandler):
 
     def __init__(self, path:str):
-        log.basicConfig(format="%(message)s", stream=sys.stdout, level=log.INFO)
+        log.basicConfig(format="[autopytest] %(message)s", stream=sys.stdout, level=log.INFO)
         self.observer = Observer()
         self.observer.schedule(self, path, recursive=True)
         self.config = parse_pyproject_toml(f"{path}/pyproject.toml")
+
         self.source_directories = self.config["source_directories"]
         self.test_directory = self.config["test_directory"]
 
         self.source_patterns = []
         for directory in self.source_directories:
-            pattern = re.escape(directory) + r".+\.py$"
+            pattern = r"^\./" + re.escape(directory) + r".+\.py$"
             self.source_patterns.append(pattern)
 
         self.test_pattern = re.escape(self.test_directory) + r".+\.py$"
@@ -31,7 +32,7 @@ class Autotest(FileSystemEventHandler):
     def start(self) -> None:
         self.observer.start()
 
-        log.info("Autotest started ✅")
+        log.info("started ✅")
         try:
             while True:
                 time.sleep(1)
@@ -45,6 +46,7 @@ class Autotest(FileSystemEventHandler):
     def on_modified(self, event: FileSystemEvent) -> None:
         for pattern in self.source_patterns:
             if re.search(pattern, event.src_path):
+                log.info(f"{event.event_type} {event.src_path}")
                 path = Path(event.src_path)
                 test_path_components = ["tests"]
 
@@ -54,14 +56,17 @@ class Autotest(FileSystemEventHandler):
                     else:
                         test_path_components.append(component)
                 test_path = "/".join(test_path_components)
-                if Path(test_path).exists() and PytestRunner.run(test_path) == 0:
+                if Path(test_path).exists():
+                    if PytestRunner.run(test_path) == 0:
+                        PytestRunner.run(".")
+                else:
+                    log.info(f"{path} - no matching test found at: {test_path}")
                     PytestRunner.run(".")
 
-        if (
-            re.search(self.test_pattern, event.src_path)
-            and PytestRunner.run(event.src_path) == 0
-        ):
-            PytestRunner.run(".")
+        if re.search(self.test_pattern, event.src_path):
+            log.info(f"{event.event_type} {event.src_path}")
+            if PytestRunner.run(event.src_path) == 0:
+                PytestRunner.run(".")
 
 
 

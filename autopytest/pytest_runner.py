@@ -3,7 +3,6 @@ from typing import Final
 
 class PytestRunner:
     ARGS: Final[list] = [
-        "/usr/bin/env",
         "pytest",
     ]
 

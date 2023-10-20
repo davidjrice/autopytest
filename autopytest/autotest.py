@@ -9,26 +9,15 @@ from watchdog.observers import Observer
 
 from .config import parse_pyproject_toml
 from .pytest_runner import PytestRunner
-
-
-class Source:
-    def __init__(self, directory, path) -> None:
-        self.directory = directory
-        self.path = path
-
-    @property
-    def dir(self) -> Path:
-        return Path(self.path).absolute().joinpath(self.directory)
-
-    @property
-    def pattern(self) -> str:
-        return r"^" + re.escape(self.dir.as_posix()) + r".+\.py$"
+from .source import Source
 
 
 class Autotest(FileSystemEventHandler):
-    def __init__(self, path: str):
+    def __init__(self, path: str) -> None:
         log.basicConfig(
-            format="[autopytest] %(message)s", stream=sys.stdout, level=log.INFO
+            format="[autopytest] %(message)s",
+            stream=sys.stdout,
+            level=log.INFO,
         )
         self.observer = Observer()
         self.observer.schedule(self, path, recursive=True)
@@ -72,16 +61,18 @@ class Autotest(FileSystemEventHandler):
                 log.info(f"{path}")
                 test_path_components = ["tests"]
 
-                for component in path.relative_to(source.dir.parent).parts:
+                for component in path.relative_to(source.path.parent).parts:
                     if (
                         not self.include_source_dir_in_test_path
                         and component == source.directory
                     ):
                         continue
-                    elif re.search(r".py", component):
+
+                    if re.search(r".py", component):
                         test_path_components.append(f"test_{component}")
                     else:
                         test_path_components.append(component)
+
                 test_path = "/".join(test_path_components)
                 if Path(test_path).exists():
                     if PytestRunner.run(test_path) == 0:

@@ -1,6 +1,17 @@
 An implementation of `autotest` for Python inspired by [autotest](https://github.com/grosser/autotest) and [guard](https://github.com/guard/guard).
 
-[autopytest](https://pypi.org/project/autopytest/) observes file change events and whenever you save a file it runs the appropriate test, upon success it runs your entire test suite and if we can't find a matching test file for a given source, we also run the entire suite.
+[autopytest](https://pypi.org/project/autopytest/) observes file change events and whenever you save a file it runs the appropriate tests with `pytest`.
+
+# Features
+`autopytest` observes file `modified` events and will perform the following:
+
+* source files
+  * will find and run the associated individual test file
+  * upon success, will run the entire suite
+  * if we can't find a matching test, run the entire suite
+* test files
+  * will run that test file
+  * upon success, will run the entire suite
 
 # Install
 

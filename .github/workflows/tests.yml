@@ -16,7 +16,6 @@ jobs:
   tox:
     name: ${{ matrix.tox.name }} ${{ matrix.os.emoji }} ${{ matrix.os.name }} ${{ matrix.python }}
     runs-on: ${{ matrix.os.runs-on }}
-    timeout-minutes: ${{ matrix.tox.timeout }}
     strategy:
       fail-fast: false
       matrix:

@@ -2,4 +2,5 @@
 .vscode
 *.whl
 *.tar.gz
+.python-version
 __pycache__

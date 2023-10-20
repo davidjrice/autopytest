@@ -27,7 +27,7 @@ poetry add autopytest
 
 In your `pyproject.toml` add the following.
 
-```python
+```toml
 [tool.autopytest]
 source_directories = ["app"]
 test_directory = "tests"
@@ -50,7 +50,7 @@ autopytest {path}
 ## Applications
 
 ### `pyproject.toml`
-```python
+```toml
 [tool.autopytest]
 source_directories = ["app", "lib"]
 test_directory = "tests"
@@ -76,9 +76,9 @@ Given the above configuration. You should use a directory structure like the fol
 ## Libraries
 
 ### `pyproject.toml`
-```python
+```toml
 [tool.autopytest]
-include_source_dir_in_test_path = False
+include_source_dir_in_test_path = false
 source_directories = ["src"]
 test_directory = "tests"
 ```

@@ -11,12 +11,17 @@ from .pytest_runner import PytestRunner
 
 class Source:
 
-    def __init__(self, directory) -> None:
+    def __init__(self, directory, path) -> None:
         self.directory = directory
+        self.path = path
+
+    @property
+    def dir(self) -> Path:
+        return Path(self.path).absolute().joinpath(self.directory)
 
     @property
     def pattern(self) -> str:
-        return r"^\./" + re.escape(self.directory) + r".+\.py$"
+        return r"^" + re.escape(self.dir.as_posix()) + r".+\.py$"
 
 
 class Autotest(FileSystemEventHandler):
@@ -33,7 +38,9 @@ class Autotest(FileSystemEventHandler):
 
         self.sources = []
         for directory in self.source_directories:
-            self.sources.append(Source(directory=directory))
+            source = Source(directory=directory, path=path)
+            self.sources.append(source)
+            log.info(f"{source.directory} {source.pattern}")
         self.test_pattern = re.escape(self.test_directory) + r".+\.py$"
 
 
@@ -59,8 +66,8 @@ class Autotest(FileSystemEventHandler):
                 path = Path(event.src_path)
                 test_path_components = ["tests"]
 
-                for component in path.parts:
-                    if not self.include_source_directories_in_test_path and component == source.directory:
+                for component in path.relative_to(source.dir).parts:
+                    if not self.include_source_dir_in_test_path and component == source.directory:
                         continue
                     elif re.search(r".py", component):
                         test_path_components.append(f"test_{component}")

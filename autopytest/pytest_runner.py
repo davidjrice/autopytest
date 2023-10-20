@@ -1,6 +1,7 @@
 import subprocess
 from typing import Final
 
+
 class PytestRunner:
     ARGS: Final[list] = [
         "pytest",

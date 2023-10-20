@@ -28,7 +28,27 @@ autopytest = "autopytest.cli:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.mypy]
+exclude = [
+  ".venv",
+]
+pretty = true
+
 [tool.ruff]
 cache-dir = ".cache/ruff"
 fix = true
 line-length = 120
+select = ["ALL"]
+ignore = [
+  "ANN101", # missing-type-self
+  "ANN102", # missing-type-cls
+  "D",      # pydocstyle
+  "G004",   # logging-f-string
+  "S101",   # use-of-assert-detected
+  "PT019",  # pytest-fixture-param-without-value
+]
+
+[tool.ruff.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+known-first-party = ["autotest", "tests"]

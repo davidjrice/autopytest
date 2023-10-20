@@ -1,6 +1,7 @@
+__pycache__
 .venv
 .vscode
 *.whl
 *.tar.gz
 .python-version
-__pycache__
+.tox

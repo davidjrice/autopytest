@@ -41,7 +41,8 @@ class Autotest(FileSystemEventHandler):
             source = Source(directory=directory, path=path)
             self.sources.append(source)
             log.info(f"{source.directory} {source.pattern}")
-        self.test_pattern = re.escape(self.test_directory) + r".+\.py$"
+        self.test_path = Path(path).absolute().joinpath(self.test_directory)
+        self.test_pattern = re.escape(self.test_path.as_posix()) + r".+\.py$"
 
 
     def start(self) -> None:
@@ -60,13 +61,16 @@ class Autotest(FileSystemEventHandler):
 
 
     def on_modified(self, event: FileSystemEvent) -> None:
+        path = Path(event.src_path).absolute()
+        matcher = path.as_posix()
         for source in self.sources:
-            if re.search(source.pattern, event.src_path):
+            if re.search(source.pattern, matcher):
                 log.info(f"{event.event_type} {event.src_path}")
-                path = Path(event.src_path)
+
+                log.info(f"{path}")
                 test_path_components = ["tests"]
 
-                for component in path.relative_to(source.dir).parts:
+                for component in path.relative_to(source.dir.parent).parts:
                     if not self.include_source_dir_in_test_path and component == source.directory:
                         continue
                     elif re.search(r".py", component):
@@ -81,9 +85,9 @@ class Autotest(FileSystemEventHandler):
                     log.info(f"{path} - no matching test found at: {test_path}")
                     PytestRunner.run(".")
 
-        if re.search(self.test_pattern, event.src_path):
-            log.info(f"{event.event_type} {event.src_path}")
-            if PytestRunner.run(event.src_path) == 0:
+        if re.search(self.test_pattern, matcher):
+            log.info(f"{event.event_type} {matcher}")
+            if PytestRunner.run(matcher) == 0:
                 PytestRunner.run(".")
 
 

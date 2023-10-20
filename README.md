@@ -1,6 +1,6 @@
 An implementation of `autotest` for Python inspired by [autotest](https://github.com/grosser/autotest) and [guard](https://github.com/guard/guard).
 
-[autopytest](https://pypi.org/project/autopytest/) observes file change events and whenever you save a file it runs the appropriate test and upon success runs your entire test suite.
+[autopytest](https://pypi.org/project/autopytest/) observes file change events and whenever you save a file it runs the appropriate test, upon success it runs your entire test suite and if we can't find a matching test file for a given source, we also run the entire suite.
 
 # Install
 
@@ -18,13 +18,9 @@ In your `pyproject.toml` add the following.
 
 ```python
 [tool.autopytest]
-source_directories = ["app", "lib"]
+source_directories = ["app"]
 test_directory = "tests"
 ```
-
-## Test Naming
-
-Test naming is *currently* important. For example given the above configuration if `app/models/order.py` is edited we will attempt to locate and run `tests/app/models/test_order.py`
 
 # Usage
 
@@ -35,3 +31,55 @@ autopytest
 autopytest {path}
 ```
 
+# Project Structure
+
+* Test naming is *currently* important.
+* Multiple nested directory structures are supported as long as the convention is followed.
+
+## Applications
+
+### `pyproject.toml`
+```python
+[tool.autopytest]
+source_directories = ["app", "lib"]
+test_directory = "tests"
+```
+
+Given the above configuration. You should use a directory structure like the following. e.g. If `app/package/module.py` is edited we will attempt to locate and run `tests/app/package/test_module.py`
+
+```
+📁 app
+    📄 __init__.py
+    📁 package
+        📄 __init__.py
+        📄 module.py
+📁 lib
+📁 tests
+    📄 __init__.py
+    📁 app
+        📁 package
+            📄 test_module.py
+    📁 lib
+```
+
+## Libraries
+
+### `pyproject.toml`
+```python
+[tool.autopytest]
+include_source_dir_in_test_path = False
+source_directories = ["src"]
+test_directory = "tests"
+```
+
+If you are developing library and want your folder structure like the following. e.g. If `src/package/module.py` is edited we will attempt to locate and run `tests/package/test_module.py`
+
+```
+📁 src
+    📁 package
+        📄 __init__.py
+        📄 module.py
+📁 tests
+    📁 package
+        📄 test_module.py
+```

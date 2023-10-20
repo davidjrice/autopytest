@@ -9,6 +9,15 @@ from watchdog.observers import Observer
 from .config import parse_pyproject_toml
 from .pytest_runner import PytestRunner
 
+class Source:
+
+    def __init__(self, directory) -> None:
+        self.directory = directory
+
+    @property
+    def pattern(self) -> str:
+        return r"^\./" + re.escape(self.directory) + r".+\.py$"
+
 
 class Autotest(FileSystemEventHandler):
 
@@ -18,14 +27,13 @@ class Autotest(FileSystemEventHandler):
         self.observer.schedule(self, path, recursive=True)
         self.config = parse_pyproject_toml(f"{path}/pyproject.toml")
 
+        self.include_source_dir_in_test_path = self.config["include_source_dir_in_test_path"]
         self.source_directories = self.config["source_directories"]
         self.test_directory = self.config["test_directory"]
 
-        self.source_patterns = []
+        self.sources = []
         for directory in self.source_directories:
-            pattern = r"^\./" + re.escape(directory) + r".+\.py$"
-            self.source_patterns.append(pattern)
-
+            self.sources.append(Source(directory=directory))
         self.test_pattern = re.escape(self.test_directory) + r".+\.py$"
 
 
@@ -43,15 +51,18 @@ class Autotest(FileSystemEventHandler):
             self.observer.stop()
             self.observer.join()
 
+
     def on_modified(self, event: FileSystemEvent) -> None:
-        for pattern in self.source_patterns:
-            if re.search(pattern, event.src_path):
+        for source in self.sources:
+            if re.search(source.pattern, event.src_path):
                 log.info(f"{event.event_type} {event.src_path}")
                 path = Path(event.src_path)
                 test_path_components = ["tests"]
 
                 for component in path.parts:
-                    if re.search(r".py", component):
+                    if not self.include_source_directories_in_test_path and component == source.directory:
+                        continue
+                    elif re.search(r".py", component):
                         test_path_components.append(f"test_{component}")
                     else:
                         test_path_components.append(component)

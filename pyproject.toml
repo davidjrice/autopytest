@@ -27,3 +27,8 @@ autopytest = "autopytest.cli:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.ruff]
+cache-dir = ".cache/ruff"
+fix = true
+line-length = 120

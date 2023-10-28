@@ -1,8 +1,24 @@
+env:
+	@pyenv local 3.12.0 3.11.5 3.10.13
+
+deps:
+	@pip install .[dev]
+
 build:
 	@hatch build .
 
 install:
-	@pip install autopytest*.tar.gz
+	@pip install .
+
+autotest:
+	@autopytest .
 
 test: # Run tests
-	@tox
+	@tox --parallel=all
+
+lint:
+	@black --color .
+	@ruff check .
+	@codespell .
+	@mypy .
+	@refurb .

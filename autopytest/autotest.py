@@ -7,9 +7,8 @@ from pathlib import Path
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from .config import parse_pyproject_toml
+from .config import Config
 from .pytest_runner import PytestRunner
-from .source import Source
 
 
 class Autotest(FileSystemEventHandler):
@@ -19,23 +18,10 @@ class Autotest(FileSystemEventHandler):
             stream=sys.stdout,
             level=log.INFO,
         )
+        self.config = Config.parse(path)
+        log.debug(self.config)
         self.observer = Observer()
         self.observer.schedule(self, path, recursive=True)
-        self.config = parse_pyproject_toml(f"{path}/pyproject.toml")
-
-        self.include_source_dir_in_test_path = self.config[
-            "include_source_dir_in_test_path"
-        ]
-        self.source_directories = self.config["source_directories"]
-        self.test_directory = self.config["test_directory"]
-
-        self.sources = []
-        for directory in self.source_directories:
-            source = Source(directory=directory, path=path)
-            self.sources.append(source)
-            log.info(f"{source.directory} {source.pattern}")
-        self.test_path = Path(path).absolute().joinpath(self.test_directory)
-        self.test_pattern = re.escape(self.test_path.as_posix()) + r".+\.py$"
 
     def start(self) -> None:
         self.observer.start()
@@ -52,23 +38,30 @@ class Autotest(FileSystemEventHandler):
             self.observer.join()
 
     def on_modified(self, event: FileSystemEvent) -> None:
-        path = Path(event.src_path).absolute()
-        matcher = path.as_posix()
-        for source in self.sources:
+        path: Path = Path(event.src_path).absolute()
+        matcher: str = path.as_posix()
+
+        if re.search(self.config.ignore_pattern, matcher):
+            return
+
+        log.info(f"{event.event_type} {event.src_path}")
+
+        for source in self.config.sources:
             if re.search(source.pattern, matcher):
                 log.info(f"{event.event_type} {event.src_path}")
 
-                log.info(f"{path}")
-                test_path_components = ["tests"]
+                test_path_components: list[str] = [self.config.test_directory]
+                path_components: list[str] = list(
+                    path.relative_to(source.path.parent.absolute()).parts,
+                )
+                if (
+                    not self.config.include_source_dir_in_test_path
+                    and path_components[0] == source.directory
+                ):
+                    path_components.pop(0)
 
-                for component in path.relative_to(source.path.parent).parts:
-                    if (
-                        not self.include_source_dir_in_test_path
-                        and component == source.directory
-                    ):
-                        continue
-
-                    if re.search(r".py", component):
+                for component in path_components:
+                    if re.search(r"\.py", component):
                         test_path_components.append(f"test_{component}")
                     else:
                         test_path_components.append(component)
@@ -81,7 +74,7 @@ class Autotest(FileSystemEventHandler):
                     log.info(f"{path} - no matching test found at: {test_path}")
                     PytestRunner.run(".")
 
-        if re.search(self.test_pattern, matcher):
+        if re.search(self.config.test_pattern, matcher):
             log.info(f"{event.event_type} {matcher}")
             if PytestRunner.run(matcher) == 0:
                 PytestRunner.run(".")

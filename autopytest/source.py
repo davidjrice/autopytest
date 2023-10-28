@@ -6,6 +6,7 @@ class Source:
     def __init__(self, directory: str, path: str) -> None:
         self._directory = directory
         self._parent = Path(path)
+        self.include_directory_in_test_path = True
 
     @property
     def directory(self) -> str:
@@ -30,3 +31,9 @@ class Source:
     @property
     def pattern(self) -> str:
         return r"^" + re.escape(self.posix) + r".+\.py$"
+
+    def include_in_test_path(self, path: str) -> bool:
+        return not self.include_directory_in_test_path and path == self.directory
+
+    def relative_path(self, path: Path) -> Path:
+        return path.relative_to(self.parent.absolute())

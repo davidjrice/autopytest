@@ -16,7 +16,6 @@ jobs:
   tox:
     name: ${{ matrix.tox.name }} ${{ matrix.os.emoji }} ${{ matrix.os.name }} ${{ matrix.python }}
     runs-on: ${{ matrix.os.runs-on }}
-    timeout-minutes: ${{ matrix.tox.timeout }}
     strategy:
       fail-fast: false
       matrix:
@@ -37,6 +36,7 @@ jobs:
             emoji: 🪟
             runs-on: [windows-latest]
         python:
+          - "3.10"
           - "3.11"
           - "3.12"
 

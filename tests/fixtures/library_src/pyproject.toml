@@ -1,0 +1,4 @@
+[tool.autopytest]
+source_directories = ["src"]
+test_directory = "tests"
+include_source_dir_in_test_path = false

@@ -1,0 +1,3 @@
+[tool.autopytest]
+source_directories = ["app", "lib"]
+test_directory = "tests"

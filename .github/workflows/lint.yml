@@ -1,0 +1,50 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ github.event_name != 'pull_request' && github.sha || '' }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: ${{ matrix.tox.name }}
+    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        tox:
+          - name: black
+            environment: black
+          - name: codespell
+            environment: codespell
+          - name: mypy
+            environment: mypy
+          - name: refurb
+            environment: refurb
+          - name: ruff
+            environment: ruff
+
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install tox
+
+      - name: Run ${{ matrix.tox.name }} in lint
+        run: |
+          python -m tox -e ${{ matrix.tox.environment }}

@@ -1,4 +1,3 @@
-import logging as log
 import platform
 import re
 from dataclasses import dataclass
@@ -14,8 +13,6 @@ else:
     from typing import Self
 
     import tomllib
-
-from .source import Source
 
 DEFAULTS = {
     "include_source_dir_in_test_path": True,
@@ -44,13 +41,6 @@ class Config:
         absolute_path: Path = Path(path).absolute()
         toml: dict = parse_pyproject_toml(f"{absolute_path}/pyproject.toml")
         return cls(_path=path, **toml)
-
-    def __post_init__(self) -> None:
-        self.sources: list[Source] = []
-        for directory in self.source_directories:
-            source = Source(directory=directory, path=self._path)
-            self.sources.append(source)
-            log.info(f"{source.directory} {source.pattern}")
 
     @property
     def path(self) -> Path:

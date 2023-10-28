@@ -20,11 +20,3 @@ def test_should_parse_application_config() -> None:
     assert config.source_directories == ["app", "lib"]
     assert config.test_directory == "tests"
     assert config.include_source_dir_in_test_path is True
-
-
-def test_should_create_list_of_source() -> None:
-    config = Config.parse("tests/fixtures/application")
-
-    sources = config.sources
-    assert sources[0].directory == "app"
-    assert sources[1].directory == "lib"

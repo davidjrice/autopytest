@@ -47,4 +47,4 @@ jobs:
 
       - name: Run ${{ matrix.tox.name }} in lint
         run: |
-          python -m tox -e ${{ matrix.litoxnt.environment }}
+          python -m tox -e ${{ matrix.tox.environment }}

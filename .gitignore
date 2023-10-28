@@ -1,7 +1,9 @@
 __pycache__
+.coverage*
+.DS_Store
+.python-version
+*.tar.gz
+.tox
 .venv
 .vscode
 *.whl
-*.tar.gz
-.python-version
-.tox

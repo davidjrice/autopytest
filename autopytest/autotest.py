@@ -9,7 +9,7 @@ from watchdog.observers import Observer
 
 from .config import Config
 from .file import File
-from .pytest_runner import PytestRunner
+from .runners.pytest import Pytest
 
 
 class Autotest(FileSystemEventHandler):
@@ -42,6 +42,9 @@ class Autotest(FileSystemEventHandler):
         path: Path = Path(event.src_path).absolute()
         matcher: str = path.as_posix()
 
+        if path.is_dir():
+            return
+
         if re.search(self.config.ignore_pattern, matcher):
             return
 
@@ -50,19 +53,18 @@ class Autotest(FileSystemEventHandler):
         for source in self.config.sources:
             if re.search(source.pattern, matcher):
                 log.info(f"{event.event_type} {event.src_path}")
-
                 source_file = File(path=path, source=source, config=self.config)
 
                 if source_file.test_path.exists():
-                    if PytestRunner.run(source_file.test_path) == 0:
-                        PytestRunner.run(".")
+                    if Pytest.run(source_file.test_path) == 0:
+                        Pytest.run(".")
                 else:
                     log.info(
-                        f"{source_file} - no matching test found at: {source_file.test_path}",
+                        f"{source_file.path} - no matching test found at: {source_file.test_path}",
                     )
-                    PytestRunner.run(".")
+                    Pytest.run(".")
 
         if re.search(self.config.test_pattern, matcher):
             log.info(f"{event.event_type} {matcher}")
-            if PytestRunner.run(matcher) == 0:
-                PytestRunner.run(".")
+            if Pytest.run(matcher) == 0:
+                Pytest.run(".")

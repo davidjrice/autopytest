@@ -13,6 +13,9 @@ install:
 autotest:
 	@autopytest .
 
+coverage:
+	@pytest --cov=autopytest --cov-report=html:.coverage_html
+
 test: # Run tests
 	@tox --parallel=all
 

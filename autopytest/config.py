@@ -21,9 +21,12 @@ DEFAULTS = {
     "include_source_dir_in_test_path": True,
     "ignored_patterns": [
         r"__pycache__",
+        r"\.cache",
+        r"\.coverage",
         r"\.git",
-        r"\.pytest_cache",
         r"\.mypy_cache",
+        r"\.pytest_cache",
+        r"\.tox",
     ],
 }
 

@@ -43,12 +43,18 @@ build-backend = "hatchling.build"
 [tool.autopytest]
 source_directories = ["autopytest"]
 test_directory = "tests"
+include_source_dir_in_test_path = false
 
 [tool.mypy]
 exclude = [
   ".venv",
 ]
 pretty = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
 
 [tool.ruff]
 cache-dir = ".cache/ruff"

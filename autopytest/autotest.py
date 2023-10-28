@@ -8,6 +8,7 @@ from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
 from .config import Config
+from .file import File
 from .pytest_runner import PytestRunner
 
 
@@ -50,28 +51,15 @@ class Autotest(FileSystemEventHandler):
             if re.search(source.pattern, matcher):
                 log.info(f"{event.event_type} {event.src_path}")
 
-                test_path_components: list[str] = [self.config.test_directory]
-                path_components: list[str] = list(
-                    path.relative_to(source.path.parent.absolute()).parts,
-                )
-                if (
-                    not self.config.include_source_dir_in_test_path
-                    and path_components[0] == source.directory
-                ):
-                    path_components.pop(0)
+                source_file = File(path=path, source=source, config=self.config)
 
-                for component in path_components:
-                    if re.search(r"\.py", component):
-                        test_path_components.append(f"test_{component}")
-                    else:
-                        test_path_components.append(component)
-
-                test_path = "/".join(test_path_components)
-                if Path(test_path).exists():
-                    if PytestRunner.run(test_path) == 0:
+                if source_file.test_path.exists():
+                    if PytestRunner.run(source_file.test_path) == 0:
                         PytestRunner.run(".")
                 else:
-                    log.info(f"{path} - no matching test found at: {test_path}")
+                    log.info(
+                        f"{source_file} - no matching test found at: {source_file.test_path}",
+                    )
                     PytestRunner.run(".")
 
         if re.search(self.config.test_pattern, matcher):

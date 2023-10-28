@@ -30,3 +30,6 @@ class Source:
     @property
     def pattern(self) -> str:
         return r"^" + re.escape(self.posix) + r".+\.py$"
+
+    def relative_path(self, path: Path) -> Path:
+        return path.relative_to(self.parent.absolute())

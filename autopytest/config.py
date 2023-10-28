@@ -65,6 +65,7 @@ class Config:
     def ignore_pattern(self) -> str:
         return "|".join(self.ignored_patterns)
 
+
 def parse_pyproject_toml(path: str) -> dict[str, Any]:
     pyproject_toml: dict = {}
     with Path(path).open("rb") as f:

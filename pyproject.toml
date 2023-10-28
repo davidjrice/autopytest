@@ -45,6 +45,12 @@ source_directories = ["autopytest"]
 test_directory = "tests"
 include_source_dir_in_test_path = false
 
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.html]
+directory = ".coverage_html"
+
 [tool.mypy]
 exclude = [
   ".venv",

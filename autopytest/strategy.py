@@ -25,6 +25,8 @@ class Strategy:
 
     @property
     def test_path_exists(self) -> bool:
+        if self._file:
+            return self._file.test_path.exists()
         return self._path.exists()
 
 

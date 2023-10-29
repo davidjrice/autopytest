@@ -66,13 +66,16 @@ max-line-length = 88
 [tool.mypy]
 exclude = [
   ".venv",
+  "fixtures",
 ]
 pretty = true
 
 [tool.pytest.ini_options]
+addopts = "--ignore=fixtures"
 testpaths = [
     "tests"
 ]
+filterwarnings = "ignore:cannot collect test class 'TestFileStrategy'"
 
 [tool.ruff]
 cache-dir = ".cache/ruff"

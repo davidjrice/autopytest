@@ -52,12 +52,19 @@ class Autotest(FileSystemEventHandler):
     def on_modified(self, event: FileSystemEvent) -> None:
         path: Path = Path(event.src_path).absolute()
         matcher: str = path.as_posix()
-        strategy: SourceFileStrategy | TestFileStrategy
 
         if path.is_dir() or re.search(self.config.ignore_pattern, matcher):
             return
 
         log.info(f"{event.event_type} {event.src_path}")
+        self.match_strategy(path, matcher)
+
+    def match_strategy(self, path: Path, matcher: str) -> None:
+        strategy: SourceFileStrategy | TestFileStrategy
+        if re.search(self.config.test_pattern, matcher):
+            strategy = TestFileStrategy(matcher)
+            strategy.execute()
+            return
 
         for source in self.sources:
             if re.search(source.pattern, matcher):
@@ -70,8 +77,3 @@ class Autotest(FileSystemEventHandler):
                 strategy = SourceFileStrategy(source_file)
                 strategy.execute()
                 return
-
-        if re.search(self.config.test_pattern, matcher):
-            strategy = TestFileStrategy(matcher)
-            strategy.execute()
-            return

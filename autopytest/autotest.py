@@ -9,8 +9,8 @@ from watchdog.observers import Observer
 
 from .config import Config
 from .file import File
-from .runners.pytest import Pytest
 from .source import Source
+from .strategy import SourceFileStrategy, TestFileStrategy
 
 
 class Autotest(FileSystemEventHandler):
@@ -52,34 +52,26 @@ class Autotest(FileSystemEventHandler):
     def on_modified(self, event: FileSystemEvent) -> None:
         path: Path = Path(event.src_path).absolute()
         matcher: str = path.as_posix()
+        strategy: SourceFileStrategy | TestFileStrategy
 
-        if path.is_dir():
-            return
-
-        if re.search(self.config.ignore_pattern, matcher):
+        if path.is_dir() or re.search(self.config.ignore_pattern, matcher):
             return
 
         log.info(f"{event.event_type} {event.src_path}")
 
         for source in self.sources:
             if re.search(source.pattern, matcher):
-                log.info(f"{event.event_type} {event.src_path}")
                 source_file = File(
                     path=path,
                     source=source,
                     test_directory=self.config.test_directory,
                 )
 
-                if source_file.test_path.exists():
-                    if Pytest.run(source_file.test_path) == 0:
-                        Pytest.run(".")
-                else:
-                    log.info(
-                        f"{source_file.path} - no matching test found at: {source_file.test_path}",
-                    )
-                    Pytest.run(".")
+                strategy = SourceFileStrategy(source_file)
+                strategy.execute()
+                return
 
         if re.search(self.config.test_pattern, matcher):
-            log.info(f"{event.event_type} {matcher}")
-            if Pytest.run(matcher) == 0:
-                Pytest.run(".")
+            strategy = TestFileStrategy(matcher)
+            strategy.execute()
+            return

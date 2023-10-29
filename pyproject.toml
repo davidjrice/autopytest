@@ -80,3 +80,7 @@ ignore = [
 combine-as-imports = true
 force-wrap-aliases = true
 known-first-party = ["autopytest", "tests"]
+
+[tool.ruff.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 5.
+max-complexity = 5

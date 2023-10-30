@@ -51,16 +51,31 @@ branch = true
 [tool.coverage.html]
 directory = ".coverage_html"
 
+[tool.flake8]
+ignore = [
+  "Q000",
+  "D101",
+  "D100",
+  "D102",
+  "D103",
+  "D104",
+  "D107",
+]
+max-line-length = 88
+
 [tool.mypy]
 exclude = [
   ".venv",
+  "fixtures",
 ]
 pretty = true
 
 [tool.pytest.ini_options]
+addopts = "--ignore=fixtures"
 testpaths = [
     "tests"
 ]
+filterwarnings = "ignore:cannot collect test class 'TestFileStrategy'"
 
 [tool.ruff]
 cache-dir = ".cache/ruff"

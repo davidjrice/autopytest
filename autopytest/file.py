@@ -1,3 +1,4 @@
+from functools import cached_property
 from pathlib import Path
 
 from .source import Source
@@ -12,14 +13,14 @@ class File:
             self.source.relative_path(self.path).parts,
         )
 
-    @property
+    @cached_property
     def test_path(self) -> Path:
         if self.source.include_in_test_path(self.path_components[0]):
             self.path_components.pop(0)
 
-        file = self.path_components.pop()
+        file_name = self.path_components.pop()
         self.test_path_components.extend(self.path_components)
-        self.test_path_components.append(f"test_{file}")
+        self.test_path_components.append(f"test_{file_name}")
 
         test_path = "/".join(self.test_path_components)
         return Path(test_path)

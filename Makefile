@@ -14,7 +14,7 @@ autotest:
 	@autopytest .
 
 coverage:
-	@pytest --cov=autopytest --cov-report=html
+	@pytest --cov=autopytest --cov-report=html,lcov
 
 test: # Run tests
 	@tox --parallel=all

@@ -54,6 +54,9 @@ source = ["autopytest"]
 [tool.coverage.html]
 directory = ".coverage/html"
 
+[tool.coverage.lcov]
+output = ".coverage/lcov.info"
+
 [tool.flake8]
 ignore = [
   "Q000",

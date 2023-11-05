@@ -1,8 +1,9 @@
-import logging as log
+import logging
 import re
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
@@ -12,16 +13,19 @@ from .file import File
 from .source import Source
 from .strategy import SourceFileStrategy, TestFileStrategy
 
+logging.basicConfig(
+    format="[autopytest] %(message)s",
+    stream=sys.stdout,
+    level=logging.INFO,
+)
 
 class Autotest(FileSystemEventHandler):
+
+    _log: logging.Logger = logging.getLogger("autopytest")
+
     def __init__(self, path: str) -> None:
-        log.basicConfig(
-            format="[autopytest] %(message)s",
-            stream=sys.stdout,
-            level=log.INFO,
-        )
         self.config = Config.parse(path)
-        log.debug(self.config)
+        self.log.debug(self.config)
 
         self.sources: list[Source] = []
         for directory in self.config.source_directories:
@@ -30,20 +34,20 @@ class Autotest(FileSystemEventHandler):
                 self.config.include_source_dir_in_test_path
             )
             self.sources.append(source)
-            log.info(f"{source.directory} {source.pattern}")
+            self.log.info(f"{source.directory} {source.pattern}")
 
-        self.observer = Observer()
-        self.observer.schedule(self, path, recursive=True)
+        self._observer = Observer()
+        self._observer.schedule(self, path, recursive=True)
 
     def start(self) -> None:
         self.observer.start()
 
-        log.info("started")
+        self.log.info("started")
         try:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            log.info("stopping")
+            self.log.info("stopping")
             sys.exit(0)
         finally:
             self.observer.stop()
@@ -54,7 +58,7 @@ class Autotest(FileSystemEventHandler):
         if path.is_dir() or re.search(self.config.ignore_pattern, path.as_posix()):
             return
 
-        log.info(f"{event.event_type} {event.src_path}")
+        self.log.info(f"{event.event_type} {event.src_path}")
         self.match_strategy(path)
 
     def match_strategy(self, path: Path) -> None:
@@ -78,3 +82,11 @@ class Autotest(FileSystemEventHandler):
                 strategy = SourceFileStrategy(source_file)
                 strategy.execute()
                 return
+
+    @property
+    def log(self) -> logging.Logger:
+        return self._log
+
+    @property
+    def observer(self) -> Any:
+        return self._observer

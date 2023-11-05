@@ -3,10 +3,10 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Any
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
+from watchdog.observers.api import BaseObserver
 
 from .config import Config
 from .file import File
@@ -19,9 +19,10 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-class Autotest(FileSystemEventHandler):
 
+class Autotest(FileSystemEventHandler):
     _log: logging.Logger = logging.getLogger("autopytest")
+    _observer: BaseObserver
 
     def __init__(self, path: str) -> None:
         self.config = Config.parse(path)
@@ -88,5 +89,5 @@ class Autotest(FileSystemEventHandler):
         return self._log
 
     @property
-    def observer(self) -> Any:
+    def observer(self) -> BaseObserver:
         return self._observer

@@ -1,3 +1,4 @@
+import contextlib
 from pathlib import Path
 from unittest.mock import MagicMock, call, patch
 
@@ -5,7 +6,6 @@ import pytest
 from watchdog.events import FileModifiedEvent
 
 from autopytest.autotest import Autotest
-import contextlib
 
 pytestmark = pytest.mark.filterwarnings(
     "ignore:cannot collect test class 'TestFileStrategy'",
@@ -69,10 +69,15 @@ def test_on_modified(mock_match_strategy: MagicMock) -> None:
 
     mock_match_strategy.assert_called_once_with(path)
 
+
 @patch("autopytest.autotest.Autotest.observer")
 @patch("autopytest.autotest.Autotest.log")
 @patch("time.sleep", side_effect=KeyboardInterrupt)
-def test_start(_mock_sleep: MagicMock, mock_log: MagicMock, mock_observer: MagicMock) -> None:
+def test_start(
+    _mock_sleep: MagicMock,
+    mock_log: MagicMock,
+    mock_observer: MagicMock,
+) -> None:
     autotest_instance = Autotest("fixtures/application")
 
     with contextlib.suppress(SystemExit):

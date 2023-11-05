@@ -62,7 +62,7 @@ class Autotest(FileSystemEventHandler):
         matcher: str = path.as_posix()
 
         if re.search(self.config.test_pattern, matcher):
-            test_path = self.config.test_path.relative_to(self.config.path.absolute())
+            test_path = path.relative_to(self.config.path.absolute())
             strategy = TestFileStrategy(test_path)
             strategy.execute()
             return

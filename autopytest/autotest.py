@@ -38,12 +38,12 @@ class Autotest(FileSystemEventHandler):
     def start(self) -> None:
         self.observer.start()
 
-        log.info("started ✅")
+        log.info("started")
         try:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            log.info("👋")
+            log.info("stopping")
             sys.exit(0)
         finally:
             self.observer.stop()

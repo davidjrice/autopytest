@@ -47,9 +47,12 @@ include_source_dir_in_test_path = false
 
 [tool.coverage.run]
 branch = true
+concurrency = ["thread"]
+data_file = ".coverage/.data"
+source = ["autopytest"]
 
 [tool.coverage.html]
-directory = ".coverage_html"
+directory = ".coverage/html"
 
 [tool.flake8]
 ignore = [
@@ -69,9 +72,11 @@ exclude = [
   "fixtures",
 ]
 pretty = true
+cache_dir = ".cache/mypy"
 
 [tool.pytest.ini_options]
 addopts = "--ignore=fixtures"
+cache_dir = ".cache/pytest"
 testpaths = [
     "tests"
 ]

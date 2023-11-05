@@ -78,12 +78,13 @@ pretty = true
 cache_dir = ".cache/mypy"
 
 [tool.pytest.ini_options]
-addopts = "--ignore=fixtures"
+addopts = "--ignore=fixtures --cov=autopytest --cov-report=term --cov-report=html --cov-report=lcov"
 cache_dir = ".cache/pytest"
 testpaths = [
     "tests"
 ]
 filterwarnings = "ignore:cannot collect test class 'TestFileStrategy'"
+
 
 [tool.ruff]
 cache-dir = ".cache/ruff"

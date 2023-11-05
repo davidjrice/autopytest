@@ -2,6 +2,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
+from watchdog.events import FileModifiedEvent
 
 from autopytest.autotest import Autotest
 
@@ -55,3 +56,14 @@ def test_match_strategy_with_source_file_strategy(mock_execute: MagicMock) -> No
     autotest.match_strategy(path)
 
     mock_execute.assert_called_once()
+
+
+@patch("autopytest.autotest.Autotest.match_strategy")
+def test_on_modified(mock_match_strategy: MagicMock) -> None:
+    autotest = Autotest("fixtures/application")
+    path = Path("fixtures/application/app/module.py").absolute()
+    event = FileModifiedEvent(path.as_posix())
+
+    autotest.on_modified(event)
+
+    mock_match_strategy.assert_called_once_with(path)

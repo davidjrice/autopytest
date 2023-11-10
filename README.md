@@ -12,6 +12,8 @@ An implementation of `autotest` for Python inspired by [autotest](https://github
 * test files
   * will run that test file
   * upon success, will run the entire suite
+* pytest configuration
+  * supports configuration of different args to pass to pytest on a per unit or per suite basis
 
 # Install
 
@@ -31,6 +33,16 @@ In your `pyproject.toml` add the following.
 [tool.autopytest]
 source_directories = ["app"]
 test_directory = "tests"
+```
+
+## `pytest` args
+
+```toml
+[tool.autopytest]
+source_directories = ["app"]
+test_directory = "tests"
+pytest_unit_args = ["--no-cov"]
+pytest_suite_args = ["--no-cov-on-fail", "--newest-first"]
 ```
 
 # Usage

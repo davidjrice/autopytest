@@ -66,6 +66,7 @@ ignore = [
   "D103",
   "D104",
   "D107",
+  "W503", # https://www.flake8rules.com/rules/W503.html
 ]
 max-line-length = 88
 

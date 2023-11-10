@@ -22,12 +22,18 @@ An implementation of `autotest` for Python inspired by [autotest](https://github
 pip install autopytest
 
 # poetry
-poetry add autopytest
+poetry add --group dev autopytest
 ```
 
 # Configuration
 
-In your `pyproject.toml` add the following.
+* `source_directories`: the directories of your source code
+* `test_directory`: the directory of your test code
+* `include_source_dir_in_test_path`: whether or not to include the source directory when inferring the test path
+* `pytest_unit_args`: the args to pass to pytest when running a `unit` test
+* `pytest_suite_args`: the args to pass to pytest when running the entire test `suite`
+
+In your `pyproject.toml` add the following minimal configuration:
 
 ```toml
 [tool.autopytest]
@@ -37,12 +43,16 @@ test_directory = "tests"
 
 ## `pytest` args
 
+We (currently) automatically add the option `--no-header` to the `pytest` args to ensure that the output is consistent and easy to read/parse.
+
+* NOTE: when using with `pytest-cov` we recommend not adding `--cov` options to your default `pytest` args in `pyproject.toml` to ensure debugger support
+
 ```toml
 [tool.autopytest]
 source_directories = ["app"]
 test_directory = "tests"
-pytest_unit_args = ["--no-cov"]
-pytest_suite_args = ["--no-cov-on-fail", "--newest-first"]
+pytest_unit_args = ["--failed-first", "--newest-first"]
+pytest_suite_args = ["--cov", "--no-cov-on-fail", "--failed-first", "--newest-first"]
 ```
 
 # Usage

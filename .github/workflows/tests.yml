@@ -65,7 +65,6 @@ jobs:
       - name: Debug codeclimate
         run: |
           echo $(pwd)
-          python -m coverage xml -o coverage.xml
 
       - name: Archive coverage results
         uses: actions/upload-artifact@v2

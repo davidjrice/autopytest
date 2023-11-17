@@ -1,3 +1,7 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/f0ec7e4071d41519de65/maintainability)](https://codeclimate.com/github/davidjrice/autopytest/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f0ec7e4071d41519de65/test_coverage)](https://codeclimate.com/github/davidjrice/autopytest/test_coverage)
+
 An implementation of `autotest` for Python inspired by [autotest](https://github.com/grosser/autotest) and [guard](https://github.com/guard/guard).
 
 [autopytest](https://pypi.org/project/autopytest/) observes file change events and whenever you save a file it runs the appropriate tests with `pytest`.

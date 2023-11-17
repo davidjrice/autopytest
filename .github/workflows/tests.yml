@@ -59,6 +59,7 @@ jobs:
 
       - name: Export coverage XML
         run: |
+          python -m pip install coverage
           python -m coverage xml -o coverage.xml
 
       - name: Archive coverage results

@@ -65,7 +65,7 @@ jobs:
       - name: Archive coverage results
         uses: actions/upload-artifact@v2
         with:
-          name: coverage-${{ matrix.os.name }}-${{ matrix.python }}.xml
+          name: coverage-${{ matrix.os.name }}-${{ matrix.python }}
           path: coverage.xml
 
   coverage:
@@ -86,7 +86,11 @@ jobs:
           # Pre-test hook
           ./cc-test-reporter before-build
           # Format the coverage data so that Code Climate understands it
-          ./cc-test-reporter format-coverage --input-type coverage.py *.xml
+          for dir in coverage-*; do
+            if [[ -d $dir ]]; then
+              ./cc-test-reporter format-coverage --input-type coverage.py $dir/coverage.xml
+            fi
+          done
           # Sum coverage data
           ./cc-test-reporter sum-coverage --output - --parts $(find . -name 'coverage-*' | wc -l) $(find . -name 'coverage-*') > coverage.total.json
           # Post-test hook

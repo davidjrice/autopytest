@@ -36,4 +36,4 @@ echo "Summing coverage data"
 
 # Post-test hook
 echo "Uploading coverage data"
-./cc-test-reporter after-build
+./cc-test-reporter after-build -t coverage.py

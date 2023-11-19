@@ -18,8 +18,22 @@ for dir in coverage-*; do
 if [[ -d $dir ]]; then
     input="$dir"/$COVERAGE_INPUT_FILE
     output="$dir"/$COVERAGE_OUTPUT_FILE
-    echo "Formatting coverage data in $input"
-    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --prefix "$working_dir" --debug
+
+    # Extract the platform name from the directory name
+    platform=${dir#coverage-}
+    platform=${platform%-*}
+    python_version=${dir##*-}
+
+    # Set the prefix based on the platform name
+    prefix=$working_dir
+    if [[ "$platform" == "macOS" ]]; then
+      prefix="/Users/runner/work/autopytest/autopytest"
+    elif [[ "$platform" == "Windows" ]]; then
+      prefix="D:/a/autopytest/autopytest"
+    fi
+
+    echo "Formatting coverage data in $input for $platform on Python $python_version"
+    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --prefix "$prefix" --debug
 fi
 done
 

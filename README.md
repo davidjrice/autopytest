@@ -1,7 +1,7 @@
 # `autopytest`
 
 [![PyPI version][pypi-badge]][pypi-link]
-[![Python versions][python-versions-badge]][[pypi-link]]
+[![Python versions][python-versions-badge]][pypi-link]
 [![Build Status][build-badge]][build-link]
 [![Maintainability][maintainability-badge]][maintainability-link]
 [![Test Coverage][coverage-badge]][coverage-link]

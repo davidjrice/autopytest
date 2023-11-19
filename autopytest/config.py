@@ -1,3 +1,4 @@
+import dataclasses
 import platform
 import re
 from dataclasses import dataclass
@@ -35,6 +36,8 @@ class Config:
     source_directories: list[str]
     test_directory: str
     include_source_dir_in_test_path: bool = True
+    pytest_unit_args: list[str] = dataclasses.field(default_factory=list)
+    pytest_suite_args: list[str] = dataclasses.field(default_factory=list)
 
     @classmethod
     def parse(cls, path: str) -> Self:

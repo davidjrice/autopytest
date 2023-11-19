@@ -16,14 +16,14 @@ def test_execute_source_file_strategy(mock_run: MagicMock) -> None:
         test_directory=autotest.config.test_directory,
     )
 
-    strategy = SourceFileStrategy(source_file)
+    strategy = SourceFileStrategy(source_file, config=autotest.config)
     result = strategy.execute()
 
     assert result
     mock_run.assert_has_calls(
         [
-            call("tests/app/test_module.py"),
-            call("."),
+            call("tests/app/test_module.py", []),
+            call(".", []),
         ],
     )
 
@@ -36,13 +36,13 @@ def test_execute_test_file_strategy(mock_run: MagicMock) -> None:
     path = Path("fixtures/application/tests/test_module.py").absolute()
     path = path.relative_to(autotest.config.path.absolute())
 
-    strategy = TestFileStrategy(path)
+    strategy = TestFileStrategy(path, config=autotest.config)
     result = strategy.execute()
 
     assert result
     mock_run.assert_has_calls(
         [
-            call("tests/test_module.py"),
-            call("."),
+            call("tests/test_module.py", []),
+            call(".", []),
         ],
     )

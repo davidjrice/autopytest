@@ -1,6 +1,7 @@
 import logging as log
 from pathlib import Path
 
+from .config import Config
 from .file import File
 from .runners.pytest import Pytest
 
@@ -13,8 +14,10 @@ class NoPathOrFileProvidedError(ValueError):
 class Strategy:
     _path: Path | None = None
     _file: File | None = None
+    config: Config
 
-    def __init__(self, path_or_file: str | Path | File) -> None:
+    def __init__(self, path_or_file: str | Path | File, config: Config) -> None:
+        self.config = config
         if isinstance(path_or_file, str):
             self._path = Path(path_or_file)
         elif isinstance(path_or_file, File):
@@ -23,7 +26,7 @@ class Strategy:
             self._path = path_or_file
 
     def execute(self) -> bool:
-        return Pytest.run(".") == 0
+        return Pytest.run(".", self.config.pytest_suite_args) == 0
 
     @property
     def test_path(self) -> str:
@@ -58,9 +61,15 @@ class SourceFileStrategy(Strategy):
                 f"{self.file_path} - no matching test found at: {self.test_path}",
             )
 
-        return Pytest.run(self.test_path) == 0 and super().execute()
+        return (
+            Pytest.run(self.test_path, self.config.pytest_unit_args) == 0
+            and super().execute()
+        )
 
 
 class TestFileStrategy(Strategy):
     def execute(self) -> bool:
-        return Pytest.run(self.test_path) == 0 and super().execute()
+        return (
+            Pytest.run(self.test_path, self.config.pytest_unit_args) == 0
+            and super().execute()
+        )

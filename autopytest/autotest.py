@@ -68,7 +68,7 @@ class Autotest(FileSystemEventHandler):
 
         if re.search(self.config.test_pattern, matcher):
             test_path = path.relative_to(self.config.path.absolute())
-            strategy = TestFileStrategy(test_path)
+            strategy = TestFileStrategy(test_path, config=self.config)
             strategy.execute()
             return
 
@@ -80,7 +80,7 @@ class Autotest(FileSystemEventHandler):
                     test_directory=self.config.test_directory,
                 )
 
-                strategy = SourceFileStrategy(source_file)
+                strategy = SourceFileStrategy(source_file, config=self.config)
                 strategy.execute()
                 return
 

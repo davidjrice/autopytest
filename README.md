@@ -112,7 +112,7 @@ If you are developing library and want your folder structure like the following.
 [maintainability-link]: https://codeclimate.com/github/davidjrice/autopytest/maintainability
 [coverage-badge]: https://api.codeclimate.com/v1/badges/f0ec7e4071d41519de65/test_coverage
 [coverage-link]: https://codeclimate.com/github/davidjrice/autopytest/test_coverage
-[build-badge]: https://github.com/davidjrice/autopytest/actions/workflows/test.yml/badge.svg
+[build-badge]: https://github.com/davidjrice/autopytest/actions/workflows/tests.yml/badge.svg
 [build-link]: https://github.com/davidjrice/autopytest/actions/workflows/tests.yml
 [pypi-badge]: https://badge.fury.io/py/autopytest.svg
 [pypi-link]: https://pypi.org/project/autopytest/

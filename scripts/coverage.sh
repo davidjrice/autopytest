@@ -47,9 +47,8 @@ echo "Found $files coverage files"
 # Sum coverage data
 echo "Summing coverage data"
 # shellcheck disable=SC2086
-./cc-test-reporter sum-coverage --parts "$parts" $files -o codeclimate.total.json
-
+./cc-test-reporter sum-coverage --parts "$parts" $files -o $AGGREGATED_COVERAGE_FILE
 # Post-test hook
 echo "Uploading coverage data"
-./cc-test-reporter upload-coverage -i codeclimate.total.json
+./cc-test-reporter upload-coverage -i $AGGREGATED_COVERAGE_FILE
 

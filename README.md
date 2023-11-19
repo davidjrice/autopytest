@@ -6,7 +6,7 @@
 [![Maintainability][maintainability-badge]][maintainability-link]
 [![Test Coverage][coverage-badge]][coverage-link]
 
-An implementation of `autotest` for Python inspired by [autotest] and [guard].
+An implementation of `autotest` for Python inspired by [autotest][] and [guard][].
 
 [autopytest](pypi-link) observes file change events and whenever you save a file it runs the appropriate tests with `pytest`.
 
@@ -58,7 +58,7 @@ autopytest {path}
 
 ### Applications
 
-#### `pyproject.toml`
+#### `pyproject.toml` for applications
 
 ```toml
 [tool.autopytest]
@@ -85,7 +85,7 @@ Given the above configuration. You should use a directory structure like the fol
 
 ### Libraries
 
-#### `pyproject.toml`
+#### `pyproject.toml` for libraries
 
 ```toml
 [tool.autopytest]

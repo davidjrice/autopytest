@@ -2,6 +2,7 @@
 
 COVERAGE_INPUT_FILE="coverage.xml"
 COVERAGE_OUTPUT_FILE="codeclimate.json"
+AGGREGATED_COVERAGE_FILE="coverage.total.json"
 
 # Download test reporter as a static binary
 echo "Downloading Code Climate test reporter"

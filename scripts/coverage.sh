@@ -19,7 +19,7 @@ if [[ -d $dir ]]; then
     input="$dir"/$COVERAGE_INPUT_FILE
     output="$dir"/$COVERAGE_OUTPUT_FILE
     echo "Formatting coverage data in $input"
-    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output"
+    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --debug
 fi
 done
 

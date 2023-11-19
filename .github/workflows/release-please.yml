@@ -17,3 +17,4 @@ jobs:
         with:
             release-type: python
             package-name: autopytest
+            token: ${{ secrets.RELEASE_PLEASE_TOKEN }}

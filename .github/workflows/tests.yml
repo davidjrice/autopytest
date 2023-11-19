@@ -62,6 +62,10 @@ jobs:
         run: |
           coverage xml -o coverage.xml
 
+      - name: Debug codeclimate
+        run: |
+          echo $(pwd)
+
       - name: Archive coverage results
         uses: actions/upload-artifact@v2
         with:

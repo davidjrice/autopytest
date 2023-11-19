@@ -52,13 +52,38 @@ jobs:
       - name: Install test dependencies
         run: |
           python -m pip install tox
+          python -m pip install coverage
 
       - name: Run ${{ matrix.tox.name }} in tox
         run: |
           python -m tox -e ${{ matrix.tox.environment }}
 
+      - name: Export coverage XML
+        run: |
+          coverage xml -o coverage.xml
+
+      - name: Debug codeclimate
+        run: |
+          echo $(pwd)
+
       - name: Archive coverage results
         uses: actions/upload-artifact@v2
         with:
-          name: coverage-${{ matrix.os.name }}-${{ matrix.python }}.lcov
-          path: .coverage/lcov.info
+          name: coverage-${{ matrix.os.name }}-${{ matrix.python }}
+          path: coverage.xml
+
+  coverage:
+    needs: tox
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Report coverage to Code Climate
+        run: |
+          scripts/coverage.sh
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}

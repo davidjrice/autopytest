@@ -20,7 +20,7 @@ if [[ -d $dir ]]; then
     input="$dir"/$COVERAGE_INPUT_FILE
     output="$dir"/$COVERAGE_OUTPUT_FILE
     echo "Formatting coverage data in $input"
-    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --prefix "$working_dir" --debug
+    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --prefix "$working_dir/autopytest" --debug
 fi
 done
 

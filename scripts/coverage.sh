@@ -2,7 +2,6 @@
 
 COVERAGE_INPUT_FILE="coverage.xml"
 COVERAGE_OUTPUT_FILE="coverage.json"
-AGGREGATED_COVERAGE_FILE="coverage.total.json"
 
 # Download test reporter as a static binary
 echo "Downloading Code Climate test reporter"
@@ -32,9 +31,9 @@ echo "Found $files coverage files"
 
 # Sum coverage data
 echo "Summing coverage data"
-./cc-test-reporter sum-coverage --parts "$parts" $files > $AGGREGATED_COVERAGE_FILE
-sum_coverage_result=$?
+# shellcheck disable=SC2086
+./cc-test-reporter sum-coverage --parts "$parts" $files
 
 # Post-test hook
 echo "Uploading coverage data"
-./cc-test-reporter after-build --exit-code $sum_coverage_result --input $AGGREGATED_COVERAGE_FILE
+./cc-test-reporter after-build

@@ -12,6 +12,7 @@ chmod +x ./cc-test-reporter
 # Pre-test hook
 ./cc-test-reporter before-build
 
+working_dir=$(pwd)
 # Format the coverage data so that Code Climate understands it
 echo "Formatting coverage data"
 for dir in coverage-*; do
@@ -19,7 +20,7 @@ if [[ -d $dir ]]; then
     input="$dir"/$COVERAGE_INPUT_FILE
     output="$dir"/$COVERAGE_OUTPUT_FILE
     echo "Formatting coverage data in $input"
-    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --debug
+    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output" --prefix "$working_dir" --debug
 fi
 done
 

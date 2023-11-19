@@ -26,4 +26,4 @@ chmod +x ./cc-test-reporter
 
 # Format the coverage data so that Code Climate understands it
 echo "Formatting coverage data"
-./cc-test-reporter format-coverage --input-type coverage.py --debug
+./cc-test-reporter format-coverage --input-type coverage.py -o codeclimate.json --debug

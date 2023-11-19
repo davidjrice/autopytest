@@ -32,7 +32,7 @@ echo "Found $files coverage files"
 
 # Sum coverage data
 echo "Summing coverage data"
-./cc-test-reporter sum-coverage --output - --parts "$($parts)" "$($files)" > $AGGREGATED_COVERAGE_FILE
+./cc-test-reporter sum-coverage --parts "$($parts)" "$($files)" > $AGGREGATED_COVERAGE_FILE
 sum_coverage_result=$?
 
 # Post-test hook

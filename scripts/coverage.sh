@@ -36,5 +36,5 @@ echo "Summing coverage data"
 
 # Post-test hook
 echo "Uploading coverage data"
-./cc-test-reporter after-build -i codeclimate.total.json
+./cc-test-reporter upload-coverage -i codeclimate.total.json
 

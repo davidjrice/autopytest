@@ -16,7 +16,10 @@ chmod +x ./cc-test-reporter
 echo "Formatting coverage data"
 for dir in coverage-*; do
 if [[ -d $dir ]]; then
-    ./cc-test-reporter format-coverage --input-type coverage.py "$dir"/$COVERAGE_INPUT_FILE --output "$dir"/$COVERAGE_OUTPUT_FILE
+    input="$dir"/$COVERAGE_INPUT_FILE
+    output="$dir"/$COVERAGE_OUTPUT_FILE
+    echo "Formatting coverage data in $input"
+    ./cc-test-reporter format-coverage "$input" --input-type coverage.py  --output "$output"
 fi
 done
 

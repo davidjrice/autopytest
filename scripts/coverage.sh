@@ -1,7 +1,7 @@
 #! /bin/bash
 
 COVERAGE_INPUT_FILE="coverage.xml"
-COVERAGE_OUTPUT_FILE="coverage.json"
+COVERAGE_OUTPUT_FILE="codeclimate.json"
 
 # Download test reporter as a static binary
 echo "Downloading Code Climate test reporter"
@@ -36,4 +36,4 @@ echo "Summing coverage data"
 
 # Post-test hook
 echo "Uploading coverage data"
-./cc-test-reporter after-build -t coverage.py
+./cc-test-reporter after-build

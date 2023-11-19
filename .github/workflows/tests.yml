@@ -62,36 +62,3 @@ jobs:
         with:
           name: coverage-${{ matrix.os.name }}-${{ matrix.python }}.lcov
           path: .coverage/lcov.info
-
-  coverage:
-    needs: tox
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v2
-
-      - name: Report coverage to Code Climate
-        run: |
-          # Download test reporter as a static binary
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          # Install cobertura converter
-          pip install lcov-to-cobertura-xml
-          # Convert lcov to cobertura
-          for file in coverage-*.lcov
-          do
-            lcov-to-cobertura-xml $file > "${file%.lcov}.xml"
-          done
-          # Pre-test hook
-          ./cc-test-reporter before-build
-          # Format the coverage data so that Code Climate understands it
-          ./cc-test-reporter format-coverage -t cobertura coverage.xml
-          # Sum coverage data
-          ./cc-test-reporter sum-coverage --output - --parts $(find . -name 'coverage-*' | wc -l) $(find . -name 'coverage-*') > coverage.total.json
-          # Post-test hook
-          ./cc-test-reporter after-build --exit-code $? --input coverage.total.json
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}

@@ -66,11 +66,16 @@ jobs:
         run: |
           echo $(pwd)
 
+      - name: Format coverage data for Code Climate
+        shell: bash
+        run: |
+          scripts/coverage-format.sh
+
       - name: Archive coverage results
         uses: actions/upload-artifact@v2
         with:
           name: coverage-${{ matrix.os.name }}-${{ matrix.python }}
-          path: coverage.xml
+          path: codeclimate.json
 
   coverage:
     needs: tox
@@ -83,6 +88,7 @@ jobs:
         uses: actions/download-artifact@v2
 
       - name: Report coverage to Code Climate
+        shell: bash
         run: |
           scripts/coverage.sh
         env:

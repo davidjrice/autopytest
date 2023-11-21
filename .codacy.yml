@@ -1,7 +1,5 @@
 ---
 engines:
   remark-lint:
-    enabled: true
-    config:
-      rules:
-        list-item-indent: false
+    rules:
+      list-item-indent: false

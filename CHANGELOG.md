@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.10](https://github.com/davidjrice/autopytest/compare/v0.0.9...v0.0.10) (2023-11-21)
+
+
+### Bug Fixes
+
+* **ci:** qodana build should install pip dependencies ([a0848e7](https://github.com/davidjrice/autopytest/commit/a0848e75a554f141e6e098e1c4a1d76c5f504c41))
+
+
+### Documentation
+
+* add codacy badge to README ([76930ce](https://github.com/davidjrice/autopytest/commit/76930ce4efef04af7861a088ae9d0aae4158a768))
+
 ## [0.0.9](https://github.com/davidjrice/autopytest/compare/0.0.8...v0.0.9) (2023-11-21)
 
 

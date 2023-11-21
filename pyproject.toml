@@ -1,6 +1,6 @@
 [project]
 name = "autopytest"
-version = "0.0.8"
+version = "0.0.9"
 description = "Autotest python code"
 authors = [
   { name = "David Rice", email = "me@davidjrice.co.uk" },

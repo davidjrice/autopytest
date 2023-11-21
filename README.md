@@ -4,6 +4,7 @@
 [![Python versions][python-versions-badge]][pypi-link]
 [![Build Status][build-badge]][build-link]
 [![Maintainability][maintainability-badge]][maintainability-link]
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d5d9781d11f6463e9fb1021c663e286e)](https://app.codacy.com/gh/davidjrice/autopytest/dashboard)
 [![Test Coverage][coverage-badge]][coverage-link]
 
 An implementation of `autotest` for Python inspired by [autotest][] and [guard][].

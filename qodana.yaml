@@ -1,2 +1,4 @@
 version: "1.0"
 linter: jetbrains/qodana-python-community:2023.2
+exclude:
+  - name: PyClassHasNoInitInspection

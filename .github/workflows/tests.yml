@@ -72,7 +72,7 @@ jobs:
           scripts/coverage-format.sh
 
       - name: Archive coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.os.name }}-${{ matrix.python }}
           path: codeclimate.json

@@ -25,7 +25,7 @@ dev = [
   "black==23.11.0",
   "codespell==2.2.6",
   "refurb==1.24.0",
-  "ruff==0.1.6",
+  "ruff==0.1.9",
   "tox==4.11.3",
   "types-toml==0.10.8.7",
 ]

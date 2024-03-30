@@ -5,21 +5,21 @@ def test_should_parse_library_config_with_src_directory() -> None:
     config = Config.parse("fixtures/library_src")
     assert config.source_directories == ["src"]
     assert config.test_directory == "tests"
-    assert config.include_source_dir_in_test_path is False
+    assert not config.include_source_dir_in_test_path
 
 
 def test_should_parse_library_config_with_package_directory() -> None:
     config = Config.parse("fixtures/library_pkg")
     assert config.source_directories == ["package"]
     assert config.test_directory == "tests"
-    assert config.include_source_dir_in_test_path is True
+    assert config.include_source_dir_in_test_path
 
 
 def test_should_parse_application_config() -> None:
     config = Config.parse("fixtures/application")
     assert config.source_directories == ["app", "lib"]
     assert config.test_directory == "tests"
-    assert config.include_source_dir_in_test_path is True
+    assert config.include_source_dir_in_test_path
 
 
 def test_ignore_pattern() -> None:

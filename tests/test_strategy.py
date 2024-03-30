@@ -16,8 +16,7 @@ def test_execute_source_file_strategy(mock_run: MagicMock) -> None:
         test_directory=autotest.config.test_directory,
     )
 
-    strategy = SourceFileStrategy(source_file)
-    result = strategy.execute()
+    result = SourceFileStrategy(source_file).execute()
 
     assert result
     mock_run.assert_has_calls(
@@ -36,8 +35,7 @@ def test_execute_test_file_strategy(mock_run: MagicMock) -> None:
     path = Path("fixtures/application/tests/test_module.py").absolute()
     path = path.relative_to(autotest.config.path.absolute())
 
-    strategy = TestFileStrategy(path)
-    result = strategy.execute()
+    result = TestFileStrategy(path).execute()
 
     assert result
     mock_run.assert_has_calls(

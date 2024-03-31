@@ -32,7 +32,11 @@ def test_execute_test_file_strategy(mock_run: MagicMock) -> None:
     mock_run.return_value = 0
     autotest = Autotest("fixtures/application")
 
-    path = Path("fixtures/application/tests/test_module.py").absolute().relative_to(autotest.config.path.absolute())
+    path = (
+        Path("fixtures/application/tests/test_module.py")
+        .absolute()
+        .relative_to(autotest.config.path.absolute())
+    )
 
     result = TestFileStrategy(path).execute()
 

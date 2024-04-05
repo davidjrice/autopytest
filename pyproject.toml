@@ -27,7 +27,7 @@ dev = [
   "refurb==2.0.0",
   "ruff==0.3.7",
   "tox==4.14.2",
-  "types-toml==0.10.8.7",
+  "types-toml==0.10.8.20240310",
 ]
 
 [project.urls]

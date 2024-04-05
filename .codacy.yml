@@ -3,3 +3,5 @@ engines:
   remark-lint:
     rules:
       list-item-indent: false
+ignore:
+  - "CHANGELOG.md"

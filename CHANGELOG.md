@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/davidjrice/autopytest/compare/v0.0.10...v0.0.11) (2024-04-05)
+
+
+### Bug Fixes
+
+* Refurb FURB149 & FURB184 compliance ([#62](https://github.com/davidjrice/autopytest/issues/62)) ([4844c88](https://github.com/davidjrice/autopytest/commit/4844c88824632b1e92f5bb69da9e2d37d0444bbf))
+
 ## [0.0.10](https://github.com/davidjrice/autopytest/compare/v0.0.9...v0.0.10) (2023-11-21)
 
 

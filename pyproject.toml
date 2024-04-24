@@ -22,7 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "black==24.4.0",
+  "black==24.4.1",
   "codespell==2.2.6",
   "refurb==2.0.0",
   "ruff==0.3.7",
